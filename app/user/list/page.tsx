@@ -11,6 +11,7 @@ import EditModal from '@/components/editmodal';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/navbar';
 import { toast } from 'react-toastify';
+import { pages } from 'next/dist/build/templates/app-page';
 interface UserInterface {
 	_id: string;
 	first_name: string;
@@ -23,7 +24,8 @@ interface UserInterface {
 const UserList = () => {
 	const [users, setUsers] = useState<UserInterface[]>([]);
 	const [loading, setLoading] = useState(true);
-
+	const [currentPage, setCurrentPage] = useState(1);
+	const usersPerPage = 10;
 	const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -84,9 +86,20 @@ const UserList = () => {
 		}
 	};
 
+	const indexOFLastItem = currentPage * usersPerPage;
+	const indexOfFirstItem = indexOFLastItem - usersPerPage;
+	const currentItems = users.slice(indexOfFirstItem, indexOFLastItem);
+	const totalPages = Math.ceil(users.length / usersPerPage);
+
 	if (loading) {
 		return <div>Loading...</div>;
 	}
+
+	const goToPage = (page: any) => {
+		if (page >= 1 && page <= totalPages) {
+			setCurrentPage(page);
+		}
+	};
 
 	return (
 		<>
@@ -107,12 +120,12 @@ const UserList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{users.map((user: UserInterface, index: number) => (
+						{currentItems.map((user, index) => (
 							<tr
 								className='bg-off-white rounded-2xl shadow-2xl text-black'
 								key={user._id}
 							>
-								<td>{index + 1}</td>
+								<td>{indexOfFirstItem + index + 1}</td>
 								<td>{user.first_name}</td>
 								<td>{user.last_name}</td>
 								<td>{user.address}</td>
@@ -137,6 +150,35 @@ const UserList = () => {
 						))}
 					</tbody>
 				</table>
+				<div className='join justify-end mt-4 mb-4 mx-4'>
+					<button
+						onClick={() => goToPage(currentPage - 1)}
+						disabled={currentPage === 1}
+						className='join-item btn btn-square text-white'
+					>
+						Prev
+					</button>
+
+					{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+						<button
+							key={page}
+							onClick={() => goToPage(page)}
+							className={`join-item btn btn-info ${
+								page === currentPage ? 'btn-active  text-white' : ''
+							}`}
+						>
+							{page}
+						</button>
+					))}
+
+					<button
+						onClick={() => goToPage(currentPage + 1)}
+						disabled={currentPage === totalPages}
+						className='join-item  btn btn-square text-white'
+					>
+						Next
+					</button>
+				</div>
 			</div>
 			{isEditModalOpen && selectedUser && (
 				<EditModal
