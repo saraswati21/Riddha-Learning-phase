@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 import { AddEditModal } from '@/components/addeditmodal';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -28,7 +28,7 @@ const UserList = () => {
 	const usersPerPage = 10;
 	const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+	const [search, setSearch] = useState('');
 	const router = useRouter();
 
 	useEffect(() => {
@@ -101,10 +101,29 @@ const UserList = () => {
 		}
 	};
 
+	const filterUsers = users.filter(
+		(user) =>
+			user.first_name.toLowerCase().includes(setSearch.toString()) ||
+			user.last_name.toLowerCase().includes(setSearch.toString()) ||
+			user.email.toLowerCase().includes(setSearch.toString()) ||
+			user.address.toLowerCase().includes(setSearch.toString())
+	);
 	return (
 		<>
 			<Navbar />
-			<AddEditModal />
+			<div className=' '>
+				<div className='flex flex-row-reverse gap-5 form-control items-center'>
+					<AddEditModal />
+					<input
+						type='text'
+						placeholder='Search'
+						value={search}
+						name='search'
+						onClick={(e: any) => setSearch(e.target.value)}
+						className='input input-bordered text-white mt-4'
+					/>
+				</div>
+			</div>
 
 			<div className='overflow-x-auto bg-white text-black mt-5 rounded-2xl shadow-2xl'>
 				<table className='table'>
@@ -150,7 +169,7 @@ const UserList = () => {
 						))}
 					</tbody>
 				</table>
-				<div className='join justify-end mt-4 mb-4 mx-4'>
+				<div className='join justify-items-end mt-4 mb-4 mx-4'>
 					<button
 						onClick={() => goToPage(currentPage - 1)}
 						disabled={currentPage === 1}

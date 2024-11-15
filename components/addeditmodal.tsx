@@ -108,6 +108,7 @@ export const AddEditModal = () => {
 				{showModal && (
 					<div className='fixed inset-0 flex items-center justify-center z-10'>
 						<div className='bg-white p-6 rounded-lg shadow-xl w-full max-w-md'>
+							
 							<h2 className='text-xl font-bold mb-4 mt-4 text-center text-black'>
 								{mode === 'add' ? 'Add New User' : 'Edit User'}
 							</h2>

@@ -3,11 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 export const Navbar = () => {
 	const router = useRouter();
 	const handleLogout = () => {
 		removeToken();
+		toast.success('Logout Successfully');
 		router.push('/login');
 	};
 	return (
