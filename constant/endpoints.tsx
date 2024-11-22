@@ -19,4 +19,5 @@ export const endpoints = {
 	users: BASEURL + '/api/users',
 	profile: BASEURL + '/api/users/profile',
 	ChangePassword: BASEURL + '/api/users/change-password',
+	Post: BASEURL + '/api/posts',
 };

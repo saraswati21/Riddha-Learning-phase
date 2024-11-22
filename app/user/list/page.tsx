@@ -114,12 +114,12 @@ const UserList = () => {
 			<div className=' '>
 				<div className='flex flex-row-reverse gap-5 form-control items-center'>
 					<AddEditModal />
+					
 					<input
 						type='text'
 						placeholder='Search'
 						value={search}
-						name='search'
-						onClick={(e: any) => setSearch(e.target.value)}
+						onClick={(e:any) => setSearch(e.target.value)}
 						className='input input-bordered text-white mt-4'
 					/>
 				</div>
@@ -169,7 +169,7 @@ const UserList = () => {
 						))}
 					</tbody>
 				</table>
-				<div className='join justify-items-end mt-4 mb-4 mx-4'>
+				<div className='join  mt-4 mb-4 mx-4'>
 					<button
 						onClick={() => goToPage(currentPage - 1)}
 						disabled={currentPage === 1}
@@ -210,3 +210,4 @@ const UserList = () => {
 	);
 };
 export default UserList;
+
